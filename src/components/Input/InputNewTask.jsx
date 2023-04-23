@@ -7,10 +7,15 @@ import {
   FormControl,
   FormHelperText,
   HStack,
+  Image,
   Input,
   Text,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
+import plus from "../../assets/icons/plus.png";
+import edit from "../../assets/icons/edit.png";
+import check from "../../assets/icons/check.png";
+import delete2 from "../../assets/icons/delete.png"
 
 export const InputNewTask = () => {
   const [inputText, setInputText] = useState("");
@@ -64,38 +69,36 @@ export const InputNewTask = () => {
             size="lg"
           />
 
-          <Button colorScheme="blue" marginTop="10px" onClick={handleSaveTask}>
-            Add New Task
+          <Button
+            colorScheme="blue"
+            marginTop="10px"
+            onClick={handleSaveTask}
+            gap={2}
+          >
+            Add New Task <Image src={plus} width="14px" />
           </Button>
         </FormControl>
       </Box>
 
-      <Box w="100vw" mt="20px" display="flex" gap={10}>
-        <Box w="30%" bg="gray.200" borderRadius="5px">
+      <Box w="100vw" mt="20px" display="flex" gap={10} justifyContent="center" >
+        <Box w="35%" bg="gray.200" borderRadius="5px">
           <Text textAlign="left" p={5}>
             To do ⌛
           </Text>
           <Box>
             {categoryToDo.map((task) => (
-              <Card key={task}
-              m="8px">
+              <Card key={task} m="8px" display="flex" flexDirection="row" alignItems="center" > 
                 <CardBody>
                   <Text>{task}</Text>
                 </CardBody>
+                <Box display="flex" flexDirection="row" gap={1} marginEnd="10px">
+                  <Button bgColor="white"><Image src={check} width="14px"  /></Button>
+                  <Button bgColor="white"><Image src={edit} width="14px" /></Button>
+                  <Button bgColor="white"><Image src={delete2} width="14px" /></Button>
+                </Box>
               </Card>
             ))}
           </Box>
-        </Box>
-
-        <Box w="25%" bg="gray.200" borderRadius="5px">
-          <Text textAlign="left" p={5}>
-            Doing 🤏
-          </Text>
-        </Box>
-        <Box w="25%" bg="gray.200" borderRadius="5px">
-          <Text textAlign="left" p={5}>
-            Done 😎
-          </Text>
         </Box>
       </Box>
     </>

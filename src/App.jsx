@@ -1,7 +1,6 @@
-import { Box, Button, Card, CardBody, CardHeader, Flex, Heading, HStack, Stack, StackDivider, Text, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import "./App.css";
-import { InputNewTask  } from "./components/Input/Input";
+import { InputNewTask  } from "./components/Input/InputNewTask";
 import { Navbar } from "./components/Navbar/Navbar";
 import { Tasks } from "./components/Tasks/Tasks";
 
