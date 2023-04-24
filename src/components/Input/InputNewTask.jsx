@@ -3,61 +3,123 @@ import {
   Button,
   Card,
   CardBody,
-  Container,
   FormControl,
-  FormHelperText,
-  HStack,
   Image,
   Input,
   Text,
+  background,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import plus from "../../assets/icons/plus.png";
 import edit from "../../assets/icons/edit.png";
 import check from "../../assets/icons/check.png";
 import delete2 from "../../assets/icons/delete.png"
+import { Todo } from "../Todo/Todo";
 
 export const InputNewTask = () => {
   const [inputText, setInputText] = useState("");
 
-  const [categoryToDo, setCategoryToDo] = useState(
-    JSON.parse(localStorage.getItem("task-todo")) || []
+  const [ToDo, setToDo] = useState(
+    JSON.parse(localStorage.getItem(["tasks"])) || []
   );
+
+  // const [edit, setEdit] = useState(null)
+
+  let task = {
+    id: Math.floor(Math.random() * 10000),
+    text: inputText,
+    isComplete: false
+  }
 
   const handleInputChange = (e) => {
     const text = e.target.value;
-    // localStorage.setItem('task-todo', valueInputTask)
     setInputText(text);
-    // console.log(inputText);
+    console.log(text);
   };
 
   const handleSaveTask = (e) => {
     e.preventDefault();
-    setCategoryToDo([...categoryToDo, inputText]);
+
+    setToDo([...ToDo, task ]);
 
     localStorage.setItem(
-      "task-todo",
-      JSON.stringify([...categoryToDo, inputText])
+      "tasks",
+      JSON.stringify([ ...ToDo , task ])
     );
 
-    // console.log(categoryToDo);
+    console.log(ToDo);
+
     setInputText("");
   };
 
-  console.log(JSON.parse(localStorage.getItem("task-todo")));
+  console.log(JSON.parse(localStorage.getItem("tasks")));
+
+  // Eliminar Task
+
+  const deleteTask = (id) => {
+    console.log(id)
+
+    const isDelete = window.confirm(`¿Está seguro que desea eliminar la tarea?`)
+
+    if(isDelete) {
+
+      const newListTaks = ToDo.filter(task => task.id !== id)
+      setToDo(newListTaks)
+
+      localStorage.setItem(
+        "tasks",
+        JSON.stringify([ToDo])
+      );
+
+    }
+  }
+
+  // Editar un task
+
+  const editTask = (task) => {
+    console.log(task)
+
+    
+
+
+  }
+  // Hacer check a task
+
+  const checkedTask = (e) => {
+
+    console.log(e.target.isComplete)
+
+    // let newTask = {
+    //   id: '',
+    //   text: '',
+    //   isComplete: ''
+    // }
+
+    // // console.log(task.isComplete)
+
+    // if(isComplete) {
+    //    newTask = {...task, isComplete: !isComplete}
+    // } else {
+    //   newTask = {...task, isComplete: !isComplete}
+    // }
+
+    // // console.log(newTask)
+    
+    // task = newTask
+
+    // console.log(task)
+  }
+
 
   return (
     <>
       <Box
-        // w='100vw'
-        // bg="red"
         borderRadius="5px"
         gap={2}
       >
         <FormControl
           display="flex"
           flexDirection="column"
-          // justifyContent="flex-start"
           alignItems="flex-start"
           marginTop="30px"
         >
@@ -67,6 +129,7 @@ export const InputNewTask = () => {
             onChange={handleInputChange}
             placeholder="Add here your task!"
             size="lg"
+            id="inputText"
           />
 
           <Button
@@ -75,7 +138,8 @@ export const InputNewTask = () => {
             onClick={handleSaveTask}
             gap={2}
           >
-            Add New Task <Image src={plus} width="14px" />
+            <Image src={plus} width="14px" />
+            Add New Task 
           </Button>
         </FormControl>
       </Box>
@@ -86,15 +150,15 @@ export const InputNewTask = () => {
             To do ⌛
           </Text>
           <Box>
-            {categoryToDo.map((task) => (
+            {ToDo.map((task) => (
               <Card key={task} m="8px" display="flex" flexDirection="row" alignItems="center" > 
                 <CardBody>
-                  <Text>{task}</Text>
+                  <Text>{task.text} </Text>
                 </CardBody>
-                <Box display="flex" flexDirection="row" gap={1} marginEnd="10px">
-                  <Button bgColor="white"><Image src={check} width="14px"  /></Button>
-                  <Button bgColor="white"><Image src={edit} width="14px" /></Button>
-                  <Button bgColor="white"><Image src={delete2} width="14px" /></Button>
+                <Box display="flex" flexDirection="row" gap={1} marginEnd="10px">              
+                  <Button bgColor="white"><Image src={check} width="14px"/></Button>
+                  <Button bgColor="white" onClick={() => editTask(task)} ><Image src={edit} width="14px" /></Button>
+                  <Button bgColor="white" onClick={() => deleteTask(task.id)}><Image src={delete2} width="14px" /></Button>
                 </Box>
               </Card>
             ))}
@@ -104,3 +168,4 @@ export const InputNewTask = () => {
     </>
   );
 };
+

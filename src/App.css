@@ -10,3 +10,11 @@
   text-align: center;
   overflow-y: hidden;
 }
+
+.checked {
+  background-color: red;
+}
+
+.noChecked{
+  background-color: aquamarine;
+}
