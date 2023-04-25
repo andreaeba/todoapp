@@ -8,6 +8,7 @@ import {
   Input,
   Text,
   background,
+  textDecoration,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import plus from "../../assets/icons/plus.png";
@@ -15,13 +16,18 @@ import edit from "../../assets/icons/edit.png";
 import check from "../../assets/icons/check.png";
 import delete2 from "../../assets/icons/delete.png"
 import { Todo } from "../Todo/Todo";
+import { ClassNames } from "@emotion/react";
 
 export const InputNewTask = () => {
   const [inputText, setInputText] = useState("");
 
-  const [ToDo, setToDo] = useState(
+  const [toDo, setToDo] = useState(
     JSON.parse(localStorage.getItem(["tasks"])) || []
   );
+
+  const [isChecked, setIsChecked] = useState(false)
+
+  const [selectedItems, setSelectedItems] = useState([])
 
   // const [edit, setEdit] = useState(null)
 
@@ -29,46 +35,46 @@ export const InputNewTask = () => {
     id: Math.floor(Math.random() * 10000),
     text: inputText,
     isComplete: false
-  }
+   }
 
   const handleInputChange = (e) => {
     const text = e.target.value;
     setInputText(text);
-    console.log(text);
+    // console.log(text);
   };
 
   const handleSaveTask = (e) => {
     e.preventDefault();
 
-    setToDo([...ToDo, task ]);
+    setToDo([ ...toDo, task ]);
 
     localStorage.setItem(
       "tasks",
-      JSON.stringify([ ...ToDo , task ])
+      JSON.stringify([ ...toDo, task ])
     );
 
-    console.log(ToDo);
+    // console.log(ToDo);
 
     setInputText("");
   };
 
-  console.log(JSON.parse(localStorage.getItem("tasks")));
+  // console.log(JSON.parse(localStorage.getItem("tasks")));
 
   // Eliminar Task
 
   const deleteTask = (id) => {
-    console.log(id)
+    // console.log(id)
 
     const isDelete = window.confirm(`¿Está seguro que desea eliminar la tarea?`)
 
     if(isDelete) {
 
-      const newListTaks = ToDo.filter(task => task.id !== id)
+      const newListTaks = toDo.filter(task => task.id !== id)
       setToDo(newListTaks)
 
       localStorage.setItem(
         "tasks",
-        JSON.stringify([ToDo])
+        JSON.stringify([toDo])
       );
 
     }
@@ -77,7 +83,7 @@ export const InputNewTask = () => {
   // Editar un task
 
   const editTask = (task) => {
-    console.log(task)
+    // console.log(task)
 
     
 
@@ -85,29 +91,13 @@ export const InputNewTask = () => {
   }
   // Hacer check a task
 
-  const checkedTask = (e) => {
+  const checkedTask = (id) => {
 
-    console.log(e.target.isComplete)
+  setIsChecked(!isChecked)
+  
+  // let newTask = { ...task, isComplete: isChecked}
 
-    // let newTask = {
-    //   id: '',
-    //   text: '',
-    //   isComplete: ''
-    // }
-
-    // // console.log(task.isComplete)
-
-    // if(isComplete) {
-    //    newTask = {...task, isComplete: !isComplete}
-    // } else {
-    //   newTask = {...task, isComplete: !isComplete}
-    // }
-
-    // // console.log(newTask)
-    
-    // task = newTask
-
-    // console.log(task)
+  console.log(id)
   }
 
 
@@ -150,13 +140,14 @@ export const InputNewTask = () => {
             To do ⌛
           </Text>
           <Box>
-            {ToDo.map((task) => (
-              <Card key={task} m="8px" display="flex" flexDirection="row" alignItems="center" > 
+            {toDo.map((task, id) => (
+              <Card key={id} m="8px" display="flex" flexDirection="row" alignItems="center" > 
                 <CardBody>
-                  <Text>{task.text} </Text>
+                  <Text className={toDo.filter(task => task.id == id) && `${isChecked ? 'checked' : ''}`}>{task.text} </Text>
+                  {/* <div className={selectedPosts.includes(post.id) && "myClass"} key={post.id}></div> */}
                 </CardBody>
                 <Box display="flex" flexDirection="row" gap={1} marginEnd="10px">              
-                  <Button bgColor="white"><Image src={check} width="14px"/></Button>
+                  <Button bgColor="white" onClick={() => checkedTask(task.id)}><Image src={check} width="14px"/></Button>
                   <Button bgColor="white" onClick={() => editTask(task)} ><Image src={edit} width="14px" /></Button>
                   <Button bgColor="white" onClick={() => deleteTask(task.id)}><Image src={delete2} width="14px" /></Button>
                 </Box>
