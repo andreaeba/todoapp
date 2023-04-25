@@ -9,6 +9,7 @@
   padding: 2rem;
   text-align: center;
   overflow-y: hidden;
+  min-height: 100vh;
 }
 
 .checked {
