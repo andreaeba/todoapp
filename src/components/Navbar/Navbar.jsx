@@ -14,7 +14,7 @@ import React from "react";
 export const Navbar = () => {
   return (
     <>
-      <header>
+      <header >
         <Heading as="h1" fontFamily="Roboto">
           To do List
         </Heading>

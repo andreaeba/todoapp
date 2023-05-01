@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import { InputNewTask  } from "./components/Input/InputNewTask";
+import { Todo  } from "./components/Todo/Todo";
 import { Navbar } from "./components/Navbar/Navbar";
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
       
       <div className="App">  
       <Navbar/>
-      <InputNewTask/>
+      <Todo/>
         </div>
     </>
   );
