@@ -16,7 +16,6 @@ import edit from "../../assets/icons/edit.png";
 import check from "../../assets/icons/check.png";
 import delete2 from "../../assets/icons/delete.png"
 import { Todo } from "../Todo/Todo";
-import { ClassNames } from "@emotion/react";
 
 export const InputNewTask = () => {
   const [inputText, setInputText] = useState("");
@@ -24,12 +23,6 @@ export const InputNewTask = () => {
   const [toDo, setToDo] = useState(
     JSON.parse(localStorage.getItem(["tasks"])) || []
   );
-
-  const [isChecked, setIsChecked] = useState(false)
-
-  const [selectedItems, setSelectedItems] = useState([])
-
-  // const [edit, setEdit] = useState(null)
 
   let task = {
     id: Math.floor(Math.random() * 10000),
@@ -53,17 +46,13 @@ export const InputNewTask = () => {
       JSON.stringify([ ...toDo, task ])
     );
 
-    // console.log(ToDo);
 
     setInputText("");
   };
 
-  // console.log(JSON.parse(localStorage.getItem("tasks")));
-
   // Eliminar Task
 
   const deleteTask = (id) => {
-    // console.log(id)
 
     const isDelete = window.confirm(`¿Está seguro que desea eliminar la tarea?`)
 
@@ -83,21 +72,26 @@ export const InputNewTask = () => {
   // Editar un task
 
   const editTask = (task) => {
-    // console.log(task)
-
-    
-
+ 
 
   }
+
   // Hacer check a task
 
   const checkedTask = (id) => {
 
-  setIsChecked(!isChecked)
-  
-  // let newTask = { ...task, isComplete: isChecked}
+    let newArray = JSON.parse(localStorage.getItem("tasks")).map((task) => {
+      if(task.id == id) {
 
-  console.log(id)
+        return { ...task, isComplete: !task.isComplete }
+      }
+      return task
+    })
+
+    setToDo(newArray)
+
+    localStorage.setItem("tasks", JSON.stringify(newArray))
+
   }
 
 
@@ -143,11 +137,17 @@ export const InputNewTask = () => {
             {toDo.map((task, id) => (
               <Card key={id} m="8px" display="flex" flexDirection="row" alignItems="center" > 
                 <CardBody>
-                  <Text className={toDo.filter(task => task.id == id) && `${isChecked ? 'checked' : ''}`}>{task.text} </Text>
+                  <Text 
+                  className={toDo.filter(task => task.id == id) && `${task.isComplete ? 'checked' : ''}`}
+                  >
+                    {task.text}
+                  </Text>
                   {/* <div className={selectedPosts.includes(post.id) && "myClass"} key={post.id}></div> */}
                 </CardBody>
                 <Box display="flex" flexDirection="row" gap={1} marginEnd="10px">              
-                  <Button bgColor="white" onClick={() => checkedTask(task.id)}><Image src={check} width="14px"/></Button>
+                  <Button bgColor="white"
+                  onClick={() => checkedTask(task.id)}
+                  ><Image src={check} width="14px"/></Button>
                   <Button bgColor="white" onClick={() => editTask(task)} ><Image src={edit} width="14px" /></Button>
                   <Button bgColor="white" onClick={() => deleteTask(task.id)}><Image src={delete2} width="14px" /></Button>
                 </Box>
